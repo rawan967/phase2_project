@@ -1,27 +1,38 @@
 const jwt =  require('jsonwebtoken');
-const app = require('express');
-app.use(express.json());
+// const token = async (id, name, committee, role) =>{
+//     return jwt.sign({ id, name, committee, role }, '666', { expiresIn: '1d' });
+// }
 
-const token = async (id, name, committee, role) =>{
-    return jwt.sign({ id, name, committee, role }, '666', { expiresIn: '1d' });
+
+async function token(id, name, committee, role) {
+    return jwt.sign({ id, name, committee, role }, '666', { expiresIn: '7d' });
 }
-
-function isAdmin(req, res, next) {  
+function verifyToken(req, res, next) {
     const authHeader = req.headers.authorization;
-    const token = authHeader && authHeader.split(' ')[1];   
-    if (!token) {
-        return res.status(401).json({ message: 'Unauthorized' });
-    }       
+    if (!authHeader) {
+        return res.status(401).json({ error: 'Access denied' });
+    }
+    const token = authHeader.split(' ')[1];
     try {
-        const decoded = jwt.verify(token, 'secretKey');    
+        const decoded = jwt.verify(token, '666');
+        console.log(decoded);
         req.user = decoded;
+    
         next();
     } catch (error) {
-        return res.status(401).json({ message: 'Invalid token' });
+        return res.status(401).json({ error: 'Invalid token' });
     }
 }
-
-
-
-module.exports ={ token,
-                  isAdmin };
+function checkRole(role){
+    return (req, res, next) => {
+        if(req.user.role != role){
+             return res.status(403).json({message: "Forbidden"});
+        }
+        next();
+    }
+}
+module.exports ={ 
+    checkRole,
+    verifyToken,
+    token,
+    };

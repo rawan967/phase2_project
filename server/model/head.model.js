@@ -1,9 +1,12 @@
-import sequelize from "../database/connection";
-import { DataTypes } from "sequelize";
+const  sequelize = require( "../database/connection.js") ;
+const { DataTypes } = require("sequelize");
 
-const Head = sequelize.define('Head', {
+const Head = sequelize.define('heads', {
     id: {
-        type: DataTypes.INTEGER, },
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     name:{
         type: DataTypes.STRING, },
     password :{
@@ -13,5 +16,4 @@ const Head = sequelize.define('Head', {
    },{
     timestamps: false
 });
-
 module.exports = Head;

@@ -1,10 +1,11 @@
-import sequelize from "../database/connection";
-
+const  sequelize = require( "../database/connection.js") ;
 const { DataTypes } = require('sequelize');
 
-const Member = sequelize.define('Member', {
+const Member = sequelize.define('Members', {
     id: {
         type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
     },
     name:{
         type: DataTypes.STRING,
@@ -12,7 +13,7 @@ const Member = sequelize.define('Member', {
     password :{
         type: DataTypes.STRING,
     },
-    committtee :{
+    committee :{
         type: DataTypes.STRING,
     },
     score :{
