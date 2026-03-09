@@ -10,7 +10,8 @@ const getMyScore = async (req, res) => {
 };
 
 const getCommitteeScoreboard = async (req, res) => {
-    const other_members = await Member.findAll({ where: { committee: req.user.committee},
+    const other_members = await Member.findAll({ where: { 
+        committee: req.user.committee},
         order : [['score', 'DESC']]
     });
    const scoreboard = other_members.map((m, i) => ({
@@ -18,7 +19,7 @@ const getCommitteeScoreboard = async (req, res) => {
     name: m.name,
     score: m.score,
    }));
-   return res.status(200).json(scoreboard);
+   return res.status(200).json(scoreboard); 
 };
 
     module.exports = {
